@@ -40,7 +40,7 @@
                                 "properties": {
                                     "kycStatus": {
                                         "type": "string",
-                                        "example": "Y"
+                                        "example": "Y-Y"
                                     }
                                 }
                             },
