@@ -1,0 +1,338 @@
+{
+    "routes": [
+        {
+            "id": "00000000000000004090",
+            "uri": "/api/customer/bank-kyc-status",
+            "name": "mock-api",
+            "methods": [
+                "POST"
+            ],
+            "plugins": {
+                "file-logger": {
+                    "include_resp_body": true,
+                    "path": "logs/file.log",
+                    "include_req_body": true,
+                    "log_format": {
+                        "request_body": "$request_body",
+                        "method": "$request_method",
+                        "status": "$status",
+                        "@timestamp": "$time_iso8601",
+                        "session_time": "$session_time",
+                        "uri": "$uri",
+                        "consumer_name": "$consumer_name",
+                        "resp_body": "$resp_body",
+                        "route_name": "$route_name",
+                        "host": "$host",
+                        "request": "$request",
+                        "client_ip": "$remote_addr"
+                    }
+                },
+                "mocking": {
+                    "content_type": "application/json",
+                    "with_mock_header": true,
+                    "delay": 1,
+                    "response_status": 200,
+                    "response_schema": {
+                        "type": "object",
+                        "properties": {
+                            "data": {
+                                "type": "object",
+                                "properties": {
+                                    "kycStatus": {
+                                        "type": "string",
+                                        "example": "Y"
+                                    }
+                                }
+                            },
+                            "status": {
+                                "type": "integer",
+                                "example": 200
+                            },
+                            "message": {
+                                "type": "string",
+                                "example": "Request processed successfully"
+                            }
+                        }
+                    }
+                }
+            },
+            "upstream": {
+                "type": "roundrobin",
+                "nodes": {
+                    "127.0.0.1:1980": 1
+                }
+            }
+        },
+        {
+            "id": "00000000000000004092",
+            "uri": "/api/customer/kyc-status",
+            "name": "mock-api",
+            "methods": [
+                "GET"
+            ],
+            "plugins": {
+                "file-logger": {
+                    "include_resp_body": true,
+                    "path": "logs/file.log",
+                    "include_req_body": true,
+                    "log_format": {
+                        "request_body": "$request_body",
+                        "method": "$request_method",
+                        "status": "$status",
+                        "@timestamp": "$time_iso8601",
+                        "session_time": "$session_time",
+                        "uri": "$uri",
+                        "consumer_name": "$consumer_name",
+                        "resp_body": "$resp_body",
+                        "route_name": "$route_name",
+                        "host": "$host",
+                        "request": "$request",
+                        "client_ip": "$remote_addr"
+                    }
+                },
+                "mocking": {
+                    "content_type": "application/json",
+                    "with_mock_header": true,
+                    "delay": 1,
+                    "response_status": 200,
+                    "response_schema": {
+                        "type": "object",
+                        "properties": {
+                            "data": {
+                                "type": "object",
+                                "properties": {
+                                    "kycStatus": {
+                                        "type": "string",
+                                        "example": "MIN-KYC"
+                                    }
+                                }
+                            },
+                            "status": {
+                                "type": "integer",
+                                "example": 200
+                            },
+                            "message": {
+                                "type": "string",
+                                "example": "Request processed successfully"
+                            }
+                        }
+                    }
+                }
+            },
+            "upstream": {
+                "type": "roundrobin",
+                "nodes": {
+                    "127.0.0.1:1980": 1
+                }
+            }
+        },
+        {
+            "id": "581920220172518082",
+            "uri": "/api/*",
+            "name": "RT-Issuer-API",
+            "methods": [
+                "GET",
+                "POST",
+                "PUT",
+                "DELETE",
+                "PATCH",
+                "HEAD",
+                "OPTIONS",
+                "CONNECT",
+                "TRACE",
+                "PURGE"
+            ],
+            "plugins": {
+                "proxy-rewrite": {
+                    "headers": {
+                        "set": {
+                            "x-source-channel": "$consumer_name"
+                        }
+                    }
+                },
+                "consumer-restriction": {
+                    "whitelist": [
+                        "1PAY_DEALER_PORTAL"
+                    ]
+                },
+                "key-auth": {
+                    "query": "apikey",
+                    "header": "x-api-key",
+                    "hide_credentials": false
+                },
+                "my-plugin": {
+                    "key": "12345678901234567890123456789012",
+                    "encrypt": false,
+                    "iv": "1234567890123456"
+                },
+                "file-logger": {
+                    "include_req_body": true,
+                    "include_resp_body": true,
+                    "log_format": {
+                        "request_body": "$request_body",
+                        "instance": "$instance_name",
+                        "method": "$request_method",
+                        "status": "$status",
+                        "@timestamp": "$time_iso8601",
+                        "session_time": "$session_time",
+                        "uri": "$uri",
+                        "consumer_name": "$consumer_name",
+                        "resp_body": "$resp_body",
+                        "route_name": "$route_name",
+                        "host": "$host",
+                        "hostname": "$hostname",
+                        "client_ip": "$remote_addr",
+                        "server_name": "$server_name"
+                    },
+                    "path": "logs/file.log"
+                }
+            },
+            "upstream_id": "00000000000000004635"
+        },
+        {
+            "id": "582097745733485246",
+            "uri": "/api/add-vehicle-new",
+            "name": "mock-api",
+            "methods": [
+                "GET",
+                "POST",
+                "PUT",
+                "DELETE",
+                "PATCH",
+                "HEAD",
+                "OPTIONS",
+                "CONNECT",
+                "TRACE",
+                "PURGE"
+            ],
+            "plugins": {
+                "mocking": {
+                    "response_status": 200,
+                    "with_mock_header": true,
+                    "delay": 1,
+                    "content_type": "application/json",
+                    "response_schema": {
+                        "type": "object",
+                        "properties": {
+                            "data": {
+                                "type": "object",
+                                "properties": {
+                                    "vehicleId": {
+                                        "type": "integer"
+                                    },
+                                    "vehicleDetails": {
+                                        "type": "object",
+                                        "properties": {
+                                            "isActive": {
+                                                "example": true,
+                                                "type": "boolean"
+                                            },
+                                            "imageIds": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "integer"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "status": {
+                                "example": 200,
+                                "type": "integer"
+                            },
+                            "message": {
+                                "example": "Vehicle has been added successfully.",
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "my-plugin": {
+                    "iv": "1234567890123456",
+                    "encrypt": false,
+                    "key": "12345678901234567890123456789012"
+                },
+                "file-logger": {
+                    "include_resp_body": true,
+                    "path": "logs/file.log",
+                    "include_req_body": true,
+                    "log_format": {
+                        "request_body": "$request_body",
+                        "method": "$request_method",
+                        "status": "$status",
+                        "@timestamp": "$time_iso8601",
+                        "session_time": "$session_time",
+                        "uri": "$uri",
+                        "consumer_name": "$consumer_name",
+                        "resp_body": "$resp_body",
+                        "route_name": "$route_name",
+                        "host": "$host",
+                        "request": "$request",
+                        "client_ip": "$remote_addr"
+                    }
+                }
+            },
+            "upstream": {
+                "type": "roundrobin",
+                "nodes": {
+                    "127.0.0.1:1980": 1
+                }
+            }
+        }
+    ],
+    "consumers": [
+        {
+            "username": "cargo_dealer",
+            "desc": "This is used for Cargo delear portal consumer",
+            "plugins": {
+                "key-auth": {
+                    "key": "Z7qH2wE9cK4jN0yX1fU3dS8mR5oL6vT9bJ2gP4nV7xF0uC1tM3rA8yD5kW6lG9"
+                },
+                "limit-count": {
+                    "rejected_code": 429,
+                    "time_window": 60,
+                    "count": 2,
+                    "key": "cargo_dealer",
+                    "policy": "local"
+                }
+            }
+        },
+        {
+            "username": "1PAY_DEALER_PORTAL",
+            "desc": "This is used for One Pay delear portal consumer",
+            "plugins": {
+                "key-auth": {
+                    "key": "mC1pR9yX4uF0tW7vJ3zN2qD8sL5rH6oE9bY1nK0dU4cV7gM3jQ2xS8fT5wA6lZ9"
+                },
+                "limit-count": {
+                    "key_type": "var",
+                    "show_limit_quota_header": true,
+                    "allow_degradation": false,
+                    "time_window": 1,
+                    "count": 1,
+                    "key": "one_pay_delear",
+                    "rejected_code": 429,
+                    "policy": "local"
+                }
+            }
+        }
+    ],
+    "upstreams": [
+        {
+            "id": "00000000000000004635",
+            "name": "Issuer-API",
+            "desc": "this is upsterem server for Issuer-API",
+            "type": "roundrobin",
+            "scheme": "http",
+            "pass_host": "pass",
+            "hash_on": "vars",
+            "tls": {
+                "verify": false
+            },
+            "nodes": {
+                "192.168.2.210:8080": 1
+            }
+        }
+    ]
+}
