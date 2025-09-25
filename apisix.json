@@ -322,7 +322,7 @@
         {
             "id": "00000000000000004635",
             "name": "Issuer-API",
-            "desc": "this is upsterem server for Issuer-API",
+            "desc": "this is upsterem server for Issuer-API - update git 1",
             "type": "roundrobin",
             "scheme": "http",
             "pass_host": "pass",
