@@ -300,7 +300,7 @@
         },
         {
             "username": "1PAY_DEALER_PORTAL",
-            "desc": "This is used for One Pay delear portal consumer - Update git ",
+            "desc": "This is used for One Pay delear portal consumer -  ",
             "plugins": {
                 "key-auth": {
                     "key": "mC1pR9yX4uF0tW7vJ3zN2qD8sL5rH6oE9bY1nK0dU4cV7gM3jQ2xS8fT5wA6lZ9"
