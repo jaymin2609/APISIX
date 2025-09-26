@@ -40,7 +40,7 @@
                                 "properties": {
                                     "kycStatus": {
                                         "type": "string",
-                                        "example": "Y-Y"
+                                        "example": "Y"
                                     }
                                 }
                             },
@@ -117,6 +117,11 @@
                             }
                         }
                     }
+                },
+                "key-auth": {
+                    "query": "apikey",
+                    "header": "x-api-key",
+                    "hide_credentials": false
                 }
             },
             "upstream": {
@@ -300,10 +305,10 @@
         },
         {
             "username": "1PAY_DEALER_PORTAL",
-            "desc": "This is used for One Pay delear portal consumer - update git 6",
+            "desc": "This is used for One Pay delear portal consumer",
             "plugins": {
                 "key-auth": {
-                    "key": "$secret://aws/1/APISIX_1PAY_DEALER_PORTAL_KEY/Key"
+                    "key": "$secret://aws/1/APISIX_1PAY_DEALER_PORTAL_KEY/CONSUMER_KEY"
                 },
                 "limit-count": {
                     "key_type": "var",
@@ -322,7 +327,7 @@
         {
             "id": "00000000000000004635",
             "name": "Issuer-API",
-            "desc": "this is upsterem server for Issuer-API - update git 2",
+            "desc": "this is upsterem server for Issuer-API",
             "type": "roundrobin",
             "scheme": "http",
             "pass_host": "pass",
@@ -333,6 +338,14 @@
             "nodes": {
                 "192.168.2.210:8080": 1
             }
+        }
+    ],
+    "secrets": [
+        {
+            "id": "aws/1",
+            "region": "ap-south-1",
+            "access_key_id": "${AWS_ACCESS_KEY_ID}",
+            "secret_access_key": "${AWS_SECRET_ACCESS_KEY}"
         }
     ]
 }
