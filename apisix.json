@@ -8,6 +8,11 @@
                 "POST"
             ],
             "plugins": {
+                "key-auth": {
+                    "query": "apikey",
+                    "header": "x-api-key",
+                    "hide_credentials": false
+                },
                 "file-logger": {
                     "include_resp_body": true,
                     "path": "logs/file.log",
